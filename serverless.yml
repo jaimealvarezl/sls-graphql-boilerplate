@@ -1,0 +1,36 @@
+service: clinic-api
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  environment:
+    DATABASE: graphql_test
+    DATABASE_USER: admin
+    DATABASE_PASSWORD: admin
+    DATABASE_HOST: localhost
+    SECRET: wr3r23fwfwefwekwself.2456342.dawqdq
+
+
+plugins:
+  - serverless-offline
+  - serverless-webpack
+
+functions:
+  graphql:
+    handler: src/graphql.server
+    events:
+      - http:
+          method: post
+          cors: true
+      - http:
+          method: get
+          cors: true
+
+package:
+  individually: true
+
+custom:
+  webpack:
+    includeModules: true
+  serverless-offline:
+    port: 4000
