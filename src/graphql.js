@@ -6,6 +6,8 @@ import jwt from 'jsonwebtoken';
 
 
 const getCurrentUser = async req => {
+    console.log({req});
+
     const token = req.headers.authorization;
 
 
@@ -17,8 +19,6 @@ const getCurrentUser = async req => {
         }
     }
 };
-
-const eraseDatabaseOnSync = true;
 
 const createUsersWithMessages = async () => {
     await models.User.create(
@@ -58,12 +58,7 @@ const createUsersWithMessages = async () => {
 };
 
 
-sequelize.sync({force: eraseDatabaseOnSync}).then(async () => {
-    if (eraseDatabaseOnSync) {
-        await createUsersWithMessages();
-    }
-});
-
+sequelize.sync();
 
 const server = new ApolloServer({
     typeDefs: schema,
@@ -74,8 +69,8 @@ const server = new ApolloServer({
             .replace('Validation error: ', '');
         return {...error, message};
     },
-    context: async ({req}) => {
-        const currentUser = await getCurrentUser(req);
+    context: async ({event, ...rest}) => {
+        const currentUser = await getCurrentUser(event);
 
         return ({
             models,

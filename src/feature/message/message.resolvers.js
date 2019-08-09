@@ -3,7 +3,7 @@ import {ForbiddenError} from 'apollo-server-lambda';
 const messageResolvers = {
     Query: {
         messages: async (parent, args, {models, user}) => {
-            console.log({user})
+            console.log({user});
 
             return models.Message.findAll();
         },

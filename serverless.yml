@@ -17,7 +17,7 @@ plugins:
 
 functions:
   graphql:
-    handler: src/graphql.server
+    handler: src/graphql.graphqlHandler
     events:
       - http:
           method: post

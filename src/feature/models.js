@@ -1,4 +1,6 @@
 import Sequelize from 'sequelize';
+import User from './user/user.model'
+import Message from './message/message.model'
 
 const sequelize = new Sequelize(
     process.env.DATABASE,
@@ -10,13 +12,10 @@ const sequelize = new Sequelize(
     },
 );
 
-const modelsToMap = ['User', 'Message'];
-
-const models = modelsToMap.reduce((acc, model) => {
-    acc[model] = sequelize.import('./' + model.toLowerCase() + "/" + model + ".model");
-
-    return acc;
-}, {});
+const models = {
+    User: sequelize.import('User', require('./user/user.model')),
+    Message: sequelize.import('Message', Message)
+};
 
 Object.keys(models).forEach(key => {
     if ('associate' in models[key]) {
